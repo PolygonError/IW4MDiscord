@@ -72,7 +72,7 @@ async def infoTimer(self):
     await client.wait_until_ready()
     print("Updating bot info")
     while not client.is_closed():
-        await self.getinfo()
+        await self.getInfo()
         await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
         await asyncio.sleep(30)
 
