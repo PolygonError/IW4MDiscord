@@ -47,9 +47,9 @@ class IW4MDiscordClient(commands.Bot):
             self.lastMapName = self.serverInfo['map']
 
             try:
-                mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\{}.png".format(mapName), 'rb')
+                mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\{}.png".format(map), 'rb')
             except OSError as e:
-                print("Failed to open map thumbnail \'{}.png\', using default".format(mapName))
+                print("Failed to open map thumbnail \'{}.png\', using default".format(map))
                 #lets hope we dont fail this
                 mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\default.png", 'rb')
 
