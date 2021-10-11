@@ -27,7 +27,7 @@ class IW4MDiscordClient(commands.Bot):
     async def on_ready(self):
         print('Logged in as {0}'.format(self.user))
         self.getInfo()
-        self.updateInfo(self.serverInfo['map'], self.serverInfo['players'], self.serverInfo['maxplayers'])
+        await self.updateInfo(self.serverInfo['map'], self.serverInfo['players'], self.serverInfo['maxplayers'])
 
     async def updateInfo(self, mapName, playerCount, maxPlayerCount):
         infoString = "{} {}/{}".format(mapName, playerCount, maxPlayerCount)
