@@ -20,14 +20,15 @@ except OSError:
 
 class IW4MDiscordClient(commands.Bot):
     lastMapName = ""
-    serverInfo = {  'map': '',
+    serverInfo = {  'map': '', #the maps file name, eg. nuketown_2020, for thumbnails
+                    'mapname': '', #the Alias, eg. Nuketown 2025
                     'players': '',
                     'maxplayers': ''  }
 
     async def on_ready(self):
         print('Logged in as {0}'.format(self.user))
         self.getInfo()
-        await self.updateInfo(self.serverInfo['map'], self.serverInfo['players'], self.serverInfo['maxplayers'])
+        await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
 
     async def updateInfo(self, mapName, playerCount, maxPlayerCount):
         infoString = "{} {}/{}".format(mapName, playerCount, maxPlayerCount)
@@ -57,6 +58,7 @@ class IW4MDiscordClient(commands.Bot):
         server = next((server for server in serverStatus.json() if server['id'] == 1270014976), None)
         if (server is not None):
             self.serverInfo['map']          = server['map']['name']
+            self.serverInfo['mapname']      = server['map']['alias']
             self.serverInfo['players']      = server['currentPlayers']
             self.serverInfo['maxplayers']   = server['maxPlayers']
             return True
