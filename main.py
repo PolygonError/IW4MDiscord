@@ -74,6 +74,6 @@ async def infoTimer(self):
         await self.getinfo()
         await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
         await asyncio.sleep(30)
-client.loop.create_task(infoTimer())
+client.loop.create_task(infoTimer(client))
 
 client.run(BOT_TOKEN)
