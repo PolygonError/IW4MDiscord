@@ -29,8 +29,8 @@ class IW4MDiscordClient(commands.Bot):
 
     async def on_ready(self):
         print('Logged in as {0}'.format(self.user))
-        self.getInfo()
-        await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
+        #self.getInfo()
+        #await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
 
     async def updateInfo(self, mapName, playerCount, maxPlayerCount):
         infoString = "{} {}/{}".format(mapName, playerCount, maxPlayerCount)
@@ -65,10 +65,6 @@ class IW4MDiscordClient(commands.Bot):
             return True
         return False
 
-    
-
-    
-
 client = IW4MDiscordClient(command_prefix="$")
 
 @loop(seconds=30)
@@ -78,10 +74,5 @@ async def infoTimer(self):
     await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
 infoTimer.before_loop(client.wait_until_ready())
 infoTimer.start()
-
-#@client.command()
-#async def test(ctx):
-#        with open('E:/Projects/Python/IW4MDiscord/assets/map_thumb/nuketown_2020.jpg', 'rb') as image:
-#            await client.user.edit(avatar=image.read())
 
 client.run(BOT_TOKEN)
