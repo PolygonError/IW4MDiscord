@@ -35,7 +35,7 @@ class IW4MDiscordClient(commands.Bot):
 
         #set the presence
         #if no players, change status to idle
-        self.change_presence(activity=discord.Activity(name=infoString, type=ActivityType.playing), status=(Status.idle if playerCount == 0 else Status.online))
+        await self.change_presence(activity=discord.Activity(name=infoString, type=ActivityType.playing), status=(Status.idle if playerCount == 0 else Status.online))
 
         #check if we have to update profile picture
         if (mapName != self.lastMapName):
@@ -43,12 +43,12 @@ class IW4MDiscordClient(commands.Bot):
             self.lastMapName = self.serverInfo['map']
 
             try:
-                mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\{}.png".format(mapName))
+                mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\{}.png".format(mapName), 'rb')
             except OSError as e:
                 print("Failed to open map thumbnail \'{}.png\', using default".format(mapName))
-                print(e)
+                print("default thumb: " + os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\default.png")
                 #lets hope we dont fail this
-                mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\default.png")
+                mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\default.png", 'rb')
 
             await client.user.edit(avatar=mapImage.read())
 
