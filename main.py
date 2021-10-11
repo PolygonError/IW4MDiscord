@@ -1,13 +1,6 @@
 #TODO - OUTLINE
-#	.register as a bot
-#	get server info every ## (30 secs?) period
-#		including map, player count
-#       player count:
-#           command= !list (commands need ! in front)
-#test = requests.post('http://localhost:1624/api/server/1270014976/execute', json={'serverId': 1270014976, 'Command': '!list'}, headers={'Content-Type': 'application/json', 'Accept': 'application/json'})
-#need to use /api/status for map and player count :)
-# use len() on ['output']
 # we need to provide ids in here, have them hard coded in a dict like 'ffa': '124124' etc.
+# need to support multiple bots soon, turn creds.file into json for each thing, like 'ffa'?
 #server to test: Black Ops 2 FFA (Plutonium) 203.123.120.184:4976 
 
 import discord
@@ -18,8 +11,12 @@ import requests
 
 import os
 
-with open(os.path.dirname(os.path.realpath(__file__)) + r"\creds.file") as creds:
-    BOT_TOKEN = creds.read()
+try:
+    with open(os.path.dirname(os.path.realpath(__file__)) + r"\creds.file") as creds:
+        BOT_TOKEN = creds.read()
+except OSError:
+    print("Add a creds.file with your Discord Bot's token")
+    os._exit()
 
 class IW4MDiscordClient(commands.Bot):
     lastMapName = ""
