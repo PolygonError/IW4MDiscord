@@ -7,7 +7,7 @@ import discord
 from discord.enums import ActivityType, Status
 from discord.ext import commands, tasks
 from discord.ext.tasks import loop
-from asyncio import sleep
+import asyncio
 
 import requests
 
@@ -67,12 +67,13 @@ class IW4MDiscordClient(commands.Bot):
 
 client = IW4MDiscordClient(command_prefix="$")
 
-@loop(seconds=30)
 async def infoTimer(self):
+    await client.wait_until_ready()
     print("Updating bot info")
-    await self.getinfo()
-    await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
-infoTimer.before_loop(client.wait_until_ready())
-infoTimer.start()
+    while not client.is_closed():
+        await self.getinfo()
+        await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
+        await asyncio.sleep(30)
+client.loop.create_task(infoTimer())
 
 client.run(BOT_TOKEN)
