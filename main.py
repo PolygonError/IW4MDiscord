@@ -35,7 +35,7 @@ class IW4MDiscordClient(commands.Bot):
 
         #set the presence
         #if no players, change status to idle
-        self.change_presence(discord.Activity(name=infoString, type=ActivityType.playing, status=(Status.idle if playerCount == 0 else Status.online)))
+        self.change_presence(discord.Activity(name=infoString, type=ActivityType.playing), status=(Status.idle if playerCount == 0 else Status.online))
 
         #check if we have to update profile picture
         if (mapName != self.lastMapName):
