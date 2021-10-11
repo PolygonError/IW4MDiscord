@@ -5,7 +5,9 @@
 
 import discord
 from discord.enums import ActivityType, Status
-from discord.ext import commands
+from discord.ext import commands, tasks
+from discord.ext.tasks import loop
+from asyncio import sleep
 
 import requests
 
@@ -47,13 +49,12 @@ class IW4MDiscordClient(commands.Bot):
                 mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\{}.png".format(mapName), 'rb')
             except OSError as e:
                 print("Failed to open map thumbnail \'{}.png\', using default".format(mapName))
-                print("default thumb: " + os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\default.png")
                 #lets hope we dont fail this
                 mapImage = open(os.path.dirname(os.path.realpath(__file__)) + r"\assets\map_thumb\default.png", 'rb')
 
             await client.user.edit(avatar=mapImage.read())
 
-    def getInfo(self):
+    async def getInfo(self):
         serverStatus = requests.get('http://localhost:1624/api/status')
         server = next((server for server in serverStatus.json() if server['id'] == 1270014976), None)
         if (server is not None):
@@ -64,7 +65,19 @@ class IW4MDiscordClient(commands.Bot):
             return True
         return False
 
+    
+
+    
+
 client = IW4MDiscordClient(command_prefix="$")
+
+@loop(seconds=30)
+async def infoTimer(self):
+    print("Updating bot info")
+    await self.getinfo()
+    await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
+infoTimer.before_loop(client.wait_until_ready())
+infoTimer.start()
 
 #@client.command()
 #async def test(ctx):
