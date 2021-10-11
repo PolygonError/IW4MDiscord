@@ -29,6 +29,7 @@ class IW4MDiscordClient(commands.Bot):
 
     async def on_ready(self):
         print('Logged in as {0}'.format(self.user))
+        self.loop.create_task(infoTimer(self))
         #self.getInfo()
         #await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
 
@@ -74,6 +75,5 @@ async def infoTimer(self):
         await self.getinfo()
         await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
         await asyncio.sleep(30)
-client.loop.create_task(infoTimer(client))
 
 client.run(BOT_TOKEN)
