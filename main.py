@@ -33,7 +33,7 @@ class IW4MDiscordClient(commands.Bot):
         #self.getInfo()
         #await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
 
-    async def updateInfo(self, mapName, playerCount, maxPlayerCount):
+    async def updateInfo(self, map, mapName, playerCount, maxPlayerCount):
         infoString = "{} {}/{}".format(mapName, playerCount, maxPlayerCount)
         print('Updating info: \'{}\''.format(infoString))
 
@@ -42,7 +42,7 @@ class IW4MDiscordClient(commands.Bot):
         await self.change_presence(activity=discord.Activity(name=infoString, type=ActivityType.playing), status=(Status.idle if playerCount == 0 else Status.online))
 
         #check if we have to update profile picture
-        if (mapName != self.lastMapName):
+        if (map != self.lastMapName):
             print('Map changed, changing profile picture to current map')
             self.lastMapName = self.serverInfo['map']
 
@@ -73,7 +73,7 @@ async def infoTimer(self):
     print("Updating bot info")
     while not client.is_closed():
         await self.getInfo()
-        await self.updateInfo(self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
+        await self.updateInfo(self.serverInfo['map'], self.serverInfo['mapname'], self.serverInfo['players'], self.serverInfo['maxplayers'])
         await asyncio.sleep(30)
 
 client.run(BOT_TOKEN)
